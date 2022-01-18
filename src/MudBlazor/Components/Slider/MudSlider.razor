@@ -7,6 +7,16 @@
     {
         <MudText Typo="Typo.body1">@ChildContent</MudText>
     }
-    <input class="@InputClassName" aria-valuenow="@Value" aria-valuemin="@_min" aria-valuemax="@_max" role="slider" @attributes="UserAttributes" type="range" min="@_min" max="@_max" step="@_step" disabled="@Disabled"
-                    @bind-value="@Text" @bind-value:event="@((Immediate ? "oninput" : "onchange"))"/>
+    
+    @if (Mvu)
+    {
+        <input class="@InputClassName" aria-valuenow="@State" value="@State" aria-valuemin="@_min" aria-valuemax="@_max" role="slider" @attributes="UserAttributes" type="range" min="@_min" max="@_max" step="@_step" disabled="@Disabled"
+              @onchange="(a) => OnStateChanged(!Immediate,a)" @oninput="(a) => OnStateChanged(Immediate,a)"/>
+    }
+    else
+    {
+        <input class="@InputClassName" aria-valuenow="@Value" aria-valuemin="@_min" aria-valuemax="@_max" role="slider" @attributes="UserAttributes" type="range" min="@_min" max="@_max" step="@_step" disabled="@Disabled"
+               @bind-value="@Text" @bind-value:event="@((Immediate ? "oninput" : "onchange"))"/>
+    }
+    
 </div>

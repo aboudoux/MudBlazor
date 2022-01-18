@@ -1,0 +1,12 @@
+﻿<MudSlider T="int" Mvu="true" Immediate="false" State="State" Step="1" Min="0" Max="10" StateChanged="(newState) => State = newState">
+    state value = @State
+</MudSlider>
+
+
+
+@code {
+
+    public static string __description__ = "The slider use the MVU principle to handle the state";
+
+    private int State = 2;
+}
