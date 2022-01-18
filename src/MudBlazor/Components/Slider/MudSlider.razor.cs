@@ -13,6 +13,7 @@ namespace MudBlazor
                 .Build();
 
         protected string _value;
+        protected string _state;
         protected string _min = "0";
         protected string _max = "100";
         protected string _step = "1";
@@ -61,6 +62,14 @@ namespace MudBlazor
         public bool Disabled { get; set; }
 
         /// <summary>
+        /// If true, the component use State / StateChanged instead of Value.
+        /// </summary>
+        /// 
+        [Parameter]
+        [Category(CategoryTypes.Slider.Behavior)]
+        public bool Mvu { get; set; }
+
+        /// <summary>
         /// Child content of component.
         /// </summary>
         [Parameter]
@@ -72,6 +81,20 @@ namespace MudBlazor
         public Converter<T> Converter { get; set; } = new DefaultConverter<T>() { Culture = CultureInfo.InvariantCulture };
 
         [Parameter] public EventCallback<T> ValueChanged { get; set; }
+        [Parameter] public EventCallback<T> StateChanged { get; set; }
+
+
+        [Parameter]
+        [Category(CategoryTypes.Slider.Data)]
+        public T State
+        {
+            get => Converter.Get(_state);
+            set
+            {
+                var d = Converter.Set(value);
+                _state = d;
+            }
+        }
 
         [Parameter]
         [Category(CategoryTypes.Slider.Data)]
@@ -124,5 +147,10 @@ namespace MudBlazor
         //        return s + ".0";
         //    return s;
         //}
+
+        private void OnStateChanged(bool fire, ChangeEventArgs args)
+        {
+            if (fire) StateChanged.InvokeAsync(Converter.Get((string)args.Value));
+        }
     }
 }
